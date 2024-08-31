@@ -1,37 +1,30 @@
 import { IUserRepository } from './abstraction-user-repository';
+import { getInMemoryUsers, updateInMemoryUsers } from './user-inmemory-data';
 import { IUser } from './user.type';
 
-export let users: IUser[] = [
-	{ id: 1, name: 'Kakon', email: 'kakon@gmail.com', phone: '010003838383' },
-
-	{
-		id: 2,
-		name: 'Borsha',
-		email: 'borsha@gmail.com',
-		phone: '010003838383',
-	},
-];
+const users = getInMemoryUsers();
 
 export class InMemoryUserDataService implements IUserRepository {
-	getUsers() {
+	async getUsers() {
 		return users;
 	}
 
-	getUser(userId: string) {
+	async getUser(userId: string) {
 		const user = users.find((u) => u.id == userId);
 		return user;
 	}
 
-	addUser(user: IUser) {
+	async addUser(user: IUser) {
 		users.push(user);
 		return user;
 	}
 
-	removeUser(userId: string) {
-		users = users.filter((u) => u.id != userId);
+	async removeUser(userId: string) {
+		const userList = users.filter((u: any) => u.id != userId);
+		updateInMemoryUsers(userList);
 	}
 
-	updateUser(userId: string, updatedUserInfo: IUser) {
+	async updateUser(userId: string, updatedUserInfo: IUser) {
 		const user = users.find((u) => u.id == userId);
 		const updatedUser = { ...user, ...updatedUserInfo };
 
@@ -63,7 +56,8 @@ export class ApiUserDataService implements IUserRepository {
 	}
 
 	async removeUser(userId: string) {
-		users = users.filter((u) => u.id !== userId);
+		const userList = users.filter((u) => u.id !== userId);
+		updateInMemoryUsers(userList);
 	}
 
 	async updateUser(userId: string, updatedUserInfo: IUser) {
