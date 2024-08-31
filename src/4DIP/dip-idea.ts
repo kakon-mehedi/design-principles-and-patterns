@@ -2,7 +2,7 @@
  * HLM Module should not depend on LLM 
  * Rather they should depend on abstraction
  * Abstraction should not depend on details (LLM)
- * Details (LLM) should depend on Abstraction 
+ * Details (LLM) should implement the Abstraction 
  */
 
 /**
